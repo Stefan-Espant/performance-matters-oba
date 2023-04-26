@@ -130,6 +130,7 @@ header details {
     right: 1em;
     margin: auto 0;
     transition: var(--a-quick);
+    z-index: 1;
 }
 
 header details .dropdown {
