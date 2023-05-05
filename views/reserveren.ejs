@@ -1,0 +1,25 @@
+<%- include('./partials/head') %>
+
+<!-- De opmaak van de header  -->
+<%- include('./partials/header') %>
+
+<main>
+    <section class="section-studyplace">
+        <h1>Reserveer dit exemplaar</h1>
+        <form class="form-reservate">
+            <fieldset>
+                <legend>Benodigde gegevens</legend>
+                <label for="date">
+                    Wat is uw naam?
+                </label>
+                <input id="text" required />
+                <label for="date">Wanneer wilt u dit exemplaar lenen?</label>
+                <input type="date" id="date" required />
+            </select>
+            </fieldset>
+            <button type="submit">Verzenden</button>
+        </form>
+    </section>
+</main>
+
+<%- include('./partials/foot') %>

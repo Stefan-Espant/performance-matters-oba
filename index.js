@@ -2,6 +2,8 @@
 import express from "express";
 import dotenv from "dotenv";
 
+dotenv.config();
+
 // Maakt een nieuwe express app
 const server = express();
 
@@ -32,17 +34,20 @@ server.listen(server.get("port"), function () {
 const space = "%20";
 const bookItems = "boeken";
 
+// Endpoints voor de URL
+const urlSearch = "search/";
+
 // Opbouw URL van de API
-const urlBase = "https://zoeken.oba.nl/api/v1/search/";
+const urlBase = "https://zoeken.oba.nl/api/v1/";
 const urlQuery = "?q=";
 const urlDefault = "special:all";
 const urlKey = `${process.env.KEY}`;
 const urlOutput = "&refine=true&output=json";
-const defaultUrl =
-	urlBase + urlQuery + urlDefault + urlKey + urlOutput;
 
-const bookUrl = 
-	urlBase + urlQuery + urlDefault + space + bookItems + urlKey + urlOutput;
+const defaultUrl =
+	urlBase + urlSearch + urlQuery + urlDefault + space + bookItems + urlKey + urlOutput;
+
+
 
 // Maakt een route voor de index
 server.get("/", (request, response) => {
@@ -51,13 +56,30 @@ server.get("/", (request, response) => {
 	});
 });
 
-
-
 // Maakt een route voor de detailpagina
-server.get("/item", (request, response) => {
-	fetchJson(bookUrl).then((data) => {
-		response.render("item", data);
-	});
+server.get("/item", async (request, response) => {
+
+	let uniqueQuery = "?id=";
+	let urlId = request.query.id || "|oba-catalogus|279240";
+
+	const itemUrl = 
+	urlBase + urlSearch + uniqueQuery + urlId + urlKey + urlOutput;
+
+	const data = await fetch(itemUrl)
+		.then((response) => response.json())
+		.catch((err) => err);
+	response.render("item", data);
+});
+
+// Maakt een route voor de reguliere reserveringspagina
+
+server.get("/reserveren", (request, response) => {
+	response.render("reserveren");
+});
+
+// Maakt een route voor de studieplek reserveringspagina
+server.get("/reserveer-een-studieplek", (request, response) => {
+		response.render("reserveer-een-studieplek");
 });
 
 /**
@@ -83,3 +105,4 @@ export async function postJson(url, body) {
 		.then((response) => response.json())
 		.catch((error) => error);
 }
+
